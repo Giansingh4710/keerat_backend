@@ -1,6 +1,16 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const { getShabads } = require('./logic')
+
+app.use(
+  cors({
+    origin: '*', // or specify domains like 'http://example.com'
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }),
+)
+
 app.get('/', (req, res) => {
   res.send('Get all shabads data api')
 })
