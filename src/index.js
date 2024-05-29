@@ -46,8 +46,8 @@ app.post("/addIndex", async (req, res) => {
   }
 });
 
-// const PORT = 3000
-const PORT = 3001;
+const PORT = 3000
+// const PORT = 3001;
 app.listen(PORT, (error) => {
   if (!error) {
     console.log(
