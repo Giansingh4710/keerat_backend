@@ -219,7 +219,7 @@ function getShabads(input) {
 
 const fs = require("fs");
 const path = require("path");
-const csvReader = require('csv-parser');
+const csvReader = require("csv-parser");
 const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const dataCsvFilePath = path.join(__dirname, "../assets/data.csv");
 
@@ -283,4 +283,22 @@ async function getIndexedTracks() {
   return data;
 }
 
-module.exports = { getShabads, appendDataToFile, getIndexedTracks};
+async function getTypeLinks(type) {
+  const data = await readCSV();
+  const links = [];
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].type === type) {
+      links.push({ ...data[i], shabadArr: ALL_SHABADS[data[i].shabadID] });
+    }
+  }
+  return link;
+}
+
+// getTypeLinks("SDO_MGA_1");
+
+module.exports = {
+  getShabads,
+  appendDataToFile,
+  getIndexedTracks,
+  getTypeLinks,
+};

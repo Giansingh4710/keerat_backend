@@ -13,7 +13,12 @@ const bodyParser = require("body-parser");
 app.use(express.json()); // needed to get body from POST request
 app.use(bodyParser.json());
 
-const { getShabads, appendDataToFile, getIndexedTracks } = require("./logic");
+const {
+  getShabads,
+  appendDataToFile,
+  getIndexedTracks,
+  getTypeLinks,
+} = require("./logic");
 
 app.get("/", (_, res) => {
   res.send("Get all shabads data api");
@@ -46,7 +51,16 @@ app.post("/addIndex", async (req, res) => {
   }
 });
 
-const PORT = 3000
+app.get("/getLastLink", async (req, res) => {
+  try {
+    const links = await getTypeLinks(req.query.type);
+    res.status(200).json(links);
+  } catch (e) {
+    res.status(500).json({ message: "Error Saving: " + e.message });
+  }
+});
+
+const PORT = 3000;
 // const PORT = 3001;
 app.listen(PORT, (error) => {
   if (!error) {
