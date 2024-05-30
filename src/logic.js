@@ -279,6 +279,7 @@ async function getIndexedTracks() {
   const data = await readCSV();
   for (let i = 0; i < data.length; i++) {
     data[i].shabadArr = ALL_SHABADS[data[i].shabadID];
+    data[i].ID = i + 1;
   }
   return data;
 }
@@ -288,7 +289,11 @@ async function getTypeLinks(type) {
   const links = [];
   for (let i = 0; i < data.length; i++) {
     if (data[i].type === type) {
-      links.push({ ...data[i], shabadArr: ALL_SHABADS[data[i].shabadID] });
+      links.push({
+        ...data[i],
+        shabadArr: ALL_SHABADS[data[i].shabadID],
+        ID: i + 1,
+      });
     }
   }
   return links;
