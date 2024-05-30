@@ -277,6 +277,9 @@ function readCSV() {
 
 async function getIndexedTracks() {
   const data = await readCSV();
+  for (let i = 0; i < data.length; i++) {
+    data[i].shabadArr = ALL_SHABADS[data[i].shabadID];
+  }
   return data;
 }
 
