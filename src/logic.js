@@ -291,7 +291,7 @@ async function getTypeLinks(type) {
       links.push({ ...data[i], shabadArr: ALL_SHABADS[data[i].shabadID] });
     }
   }
-  return link;
+  return links;
 }
 
 // getTypeLinks("SDO_MGA_1");

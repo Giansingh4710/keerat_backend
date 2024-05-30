@@ -51,8 +51,11 @@ app.post("/addIndex", async (req, res) => {
   }
 });
 
-app.get("/getLastLink", async (req, res) => {
+app.get("/getTypeLinks", async (req, res) => {
   try {
+    if (!req.query.type) {
+      throw new Error("type? is required");
+    }
     const links = await getTypeLinks(req.query.type);
     res.status(200).json(links);
   } catch (e) {
