@@ -198,7 +198,7 @@ function get_sbds_first_letters(gurmukhi_input) {
 
       if (line_matched) {
         all_matched_shabad_keys.push({
-          shabadId: key,
+          shabadID: key,
           lineInd: pu_ln_idx,
           shabadArray: shabadArray,
         });
@@ -217,93 +217,4 @@ function getShabads(input) {
   return get_sbds_first_letters(gurmukhi_input);
 }
 
-const fs = require("fs");
-const path = require("path");
-const csvReader = require("csv-parser");
-const createCsvWriter = require("csv-writer").createObjectCsvWriter;
-const dataCsvFilePath = path.join(__dirname, "../assets/data.csv");
-
-function getCsvWriter() {
-  return createCsvWriter({
-    path: dataCsvFilePath,
-    // created,type,artist,timestamp,shabadID,description,link
-    header: [
-      { id: "created", title: "created" },
-      { id: "type", title: "type" },
-      { id: "artist", title: "artist" },
-      { id: "timestamp", title: "timestamp" },
-      { id: "shabadID", title: "shabadID" },
-      { id: "description", title: "description" },
-      { id: "link", title: "link" },
-    ],
-    append: true, // Append to the file
-  });
-}
-
-async function appendDataToFile(bodyObj) {
-  const { description, shabadId, timestamp, trackType, artist, link } = bodyObj;
-
-  const unixTime = Math.floor(Date.now() / 1000);
-  const data = [
-    {
-      created: unixTime,
-      type: trackType,
-      artist: artist,
-      timestamp: timestamp,
-      shabadID: shabadId,
-      description: description,
-      link: link,
-    },
-  ];
-  const csvWriter = getCsvWriter();
-  await csvWriter.writeRecords(data);
-}
-
-function readCSV() {
-  return new Promise((resolve, reject) => {
-    const results = [];
-
-    fs.createReadStream(dataCsvFilePath)
-      .pipe(csvReader())
-      .on("data", (data) => results.push(data))
-      .on("end", () => {
-        resolve(results);
-      })
-      .on("error", (error) => {
-        reject(error);
-      });
-  });
-}
-
-async function getIndexedTracks() {
-  const data = await readCSV();
-  for (let i = 0; i < data.length; i++) {
-    data[i].shabadArr = ALL_SHABADS[data[i].shabadID];
-    data[i].ID = i + 1;
-  }
-  return data;
-}
-
-async function getTypeLinks(type) {
-  const data = await readCSV();
-  const links = [];
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].type === type) {
-      links.push({
-        ...data[i],
-        shabadArr: ALL_SHABADS[data[i].shabadID],
-        ID: i + 1,
-      });
-    }
-  }
-  return links;
-}
-
-// getTypeLinks("SDO_MGA_1");
-
-module.exports = {
-  getShabads,
-  appendDataToFile,
-  getIndexedTracks,
-  getTypeLinks,
-};
+module.exports = { getShabads };

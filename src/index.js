@@ -13,12 +13,12 @@ const bodyParser = require("body-parser");
 app.use(express.json()); // needed to get body from POST request
 app.use(bodyParser.json());
 
+const { getShabads } = require("./gurbani_logic.js");
 const {
-  getShabads,
   appendDataToFile,
   getIndexedTracks,
   getTypeLinks,
-} = require("./logic");
+} = require("./db_logic.js");
 
 app.get("/", (_, res) => {
   res.send("Get all shabads data api");
