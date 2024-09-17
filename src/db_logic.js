@@ -82,8 +82,35 @@ async function getTypeLinks(type) {
   return links;
 }
 
+function getIndexedTracksByArtists(artists) {
+  return new Promise((resolve, reject) => {
+    const results = {};
+
+    fs.createReadStream(dataCsvFilePath)
+      .pipe(csvReader())
+      .on("data", (data) => {
+        if (artists.includes(data.artist)) {
+          if (!(data.link in results)) {
+            results[data.link] = [];
+          }
+          results[data.link].push({
+            ...data,
+            shabadArr: ALL_SHABADS[data.shabadID],
+          });
+        }
+      })
+      .on("end", () => {
+        resolve(results);
+      })
+      .on("error", (error) => {
+        reject(error);
+      });
+  });
+}
+
 module.exports = {
   appendDataToFile,
   getIndexedTracks,
   getTypeLinks,
+  getIndexedTracksByArtists,
 };

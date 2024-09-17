@@ -18,6 +18,7 @@ const {
   appendDataToFile,
   getIndexedTracks,
   getTypeLinks,
+  getIndexedTracksByArtists,
 } = require("./db_logic.js");
 
 app.get("/", (_, res) => {
@@ -62,6 +63,21 @@ app.get("/getTypeLinks", async (req, res) => {
     res.status(500).json({ message: "Error Saving: " + e.message });
   }
 });
+
+app.get("/getIndexedTracksByArtists", async (req, res) => {
+  try {
+    if (!req.query.artists) {
+      throw new Error("type? is required");
+    }
+    const artists = JSON.parse(req.query.artists);
+    const tracksByLinks = await getIndexedTracksByArtists(artists);
+    console.log(tracksByLinks);
+    res.status(200).json(tracksByLinks);
+  } catch (e) {
+    res.status(500).json({ message: "Error Saving: " + e.message });
+  }
+});
+
 
 const PORT = 3000;
 // const PORT = 3001;
