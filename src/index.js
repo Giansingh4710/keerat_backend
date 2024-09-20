@@ -67,11 +67,10 @@ app.get("/getTypeLinks", async (req, res) => {
 app.get("/getIndexedTracksByArtists", async (req, res) => {
   try {
     if (!req.query.artists) {
-      throw new Error("type? is required");
+      throw new Error("artists?=[..] required");
     }
     const artists = JSON.parse(req.query.artists);
     const tracksByLinks = await getIndexedTracksByArtists(artists);
-    console.log(tracksByLinks);
     res.status(200).json(tracksByLinks);
   } catch (e) {
     res.status(500).json({ message: "Error Saving: " + e.message });

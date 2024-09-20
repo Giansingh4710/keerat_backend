@@ -1,0 +1,1 @@
+59 23 * * * cd /var/www/getshabads.xyz && ./upload_data.sh

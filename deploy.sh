@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+# to use vim with your config
+# sudo -E vim . 
+
 function exitIfError {
   if [ $? -ne 0 ]; then
     echo "$1"

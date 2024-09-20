@@ -80,3 +80,7 @@
     sudo ufw delete allow 'Nginx HTTP'
     sudo ufw status
 ```
+
+
+### Run Scripts in Background
+- ```crontab mycron.txt```
