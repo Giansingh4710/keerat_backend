@@ -1,23 +1,18 @@
-#!/usr/bin/bash
+#!/bin/bash
 
-# to use vim with your config
-# sudo -E vim . 
+set -e  # Exit on error
 
-function exitIfError {
-  if [ $? -ne 0 ]; then
-    echo "$1"
-    exit 1
-  fi
-}
+# Set default mode to production
+IMAGE_NAME="keerat_backend"
+PORT=3002
 
-git pull
-exitIfError "git pull failed"
+docker ps -a -q --filter "name=$IMAGE_NAME" | xargs docker stop
+docker ps -a -q --filter "name=$IMAGE_NAME" | xargs docker rm
 
-npm i
-exitIfError "npm install failed"
+# Build image
+echo "🔨 Building Docker image for $MODE..."
+docker build --target "$MODE" -t "$IMAGE_NAME" .
 
-pm2 kill
-exitIfError "pm2 kill failed"
-
-pm2 start npm --name shabadApi -- start
-pm2 save
+# Run container
+echo "🚀 Running container from $IMAGE_NAME..."
+docker run -d -p $PORT:$PORT --name "$IMAGE_NAME" "$IMAGE_NAME"

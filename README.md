@@ -1,25 +1,4 @@
 # How I setup the server for the shabad api
-### Get Domain Name and Host it on AWS
-- Bought namecheap domain. 
-- Go -> Route 53, hosted zone, Create Hosted Zone with domain name.
-- Copy NS records from Route 53 and paste it in namecheap domain.
-- For me they were:
-    - ns-1289.awsdns-33.org.
-    - ns-735.awsdns-27.net.
-    - ns-1975.awsdns-54.co.uk.
-    - ns-504.awsdns-63.com.
-- In namecheap under the domain, got to nameservers. Select custom DNS and paste the ns-* records they show for you in aws.
-- Create Record
-    - Subdomain: (leave blank)
-    - Record type: A - Routes traffic to an IPv4 address and some AWS resources.
-    - Value: IP address of the EC2 instance.
-- Create Record (2)
-    - Subdomain: www
-    - Record type: A - Routes traffic to an IPv4 address and some AWS resources.
-    - Toggle on Alias
-    - Route traffic to: 'Alias to another record in this hosted zone'
-    - Choose your domain name
-- Will Take some time to reflect the changes.
 
 ### Configure EC2 Ubuntu Instance
 - Create EC2 instance. Make sure to click ubuntu and also allow http and https traffic.
@@ -39,31 +18,31 @@
 - At this point you should be able to see the nginx page when you go to the ip address of the server
     - ```curl 54.226.218.23``` (this should work too if done correctly)
 - For Domain Setup
-    - ```
-        sudo mkdir /var/www/getshabads.xyz
-        sudo chown -R $USER:$USER /var/www/getshabads.xyz
-    ```
-    - ```sudo vim /etc/nginx/sites-available/getshabads.xyz```
-        - copy this into the file:
-            ```
-            server {
-                server_name getshabads.xyz www.getshabads.xyz;
+    - `sudo mkdir /var/www/keerat_backend`
+    - `sudo chown -R $USER:$USER /var/www/keerat_backend`
+    - copy the below in `sudo vim /etc/nginx/sites-available/keerat_backend`
+        ```
+        server {
+            server_name giansingh4710.xyz www.giansingh4710.xyz;
 
-                location / {
-                    proxy_pass http://localhost:3000;
-                    proxy_http_version 1.1;
-                    proxy_set_header Upgrade $http_upgrade;
-                    proxy_set_header Connection 'upgrade';
-                    proxy_set_header Host $host;
-                    proxy_cache_bypass $http_upgrade;
-                }
+            location / {
+                proxy_pass http://localhost:3000;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;
             }
-            ```
-    - ```sudo ln -s /etc/nginx/sites-available/getshabads.xyz /etc/nginx/sites-enabled/getshabads.xyz```
-    - ```sudo nginx -t``` to check if syntax is correct
-    - ```sudo nginx -s reload``` to reload nginx
-- At this point, if you clone repo into `/var/www/getshabads.xyz` and do 'sudo npm run dev', site should be live on the domain name.
-    - ```sudo git clone https://github.com/Giansingh4710/shabadApi /var/www/getshabads.xyz```
+        }
+        ```
+    - `sudo ln -s /etc/nginx/sites-available/keerat_backend /etc/nginx/sites-enabled/keerat_backend`
+    -  to check if syntax is correct
+        - `sudo nginx -t`
+    - to reload
+        - `sudo nginx -s reload`
+
+- At this point, if you clone repo into `/var/www/keerat_backend` and do 'sudo npm run dev', site should be live on the domain name.
+    - `sudo git clone https://github.com/Giansingh4710/keerat_backend /var/www/keerat_backend`
 - ```sudo npm install pm2@latest -g``` keep server in background
 - ```sudo pm2 startup systemd``` (it will give you a command to run. Run it. Command for me is below)
     ```sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu```
