@@ -43,12 +43,8 @@
 
 - At this point, if you clone repo into `/var/www/keerat_backend` and do 'sudo npm run dev', site should be live on the domain name.
     - `sudo git clone https://github.com/Giansingh4710/keerat_backend /var/www/keerat_backend`
-- ```sudo npm install pm2@latest -g``` keep server in background
-- ```sudo pm2 startup systemd``` (it will give you a command to run. Run it. Command for me is below)
-    ```sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu```
-- ```pm2 start npm --name yankPaste -- start```
-    - ```pm2 kill``` (will kill the server if needed)
-- ```pm2 save``` (when pm2 restarts, it will start the server again)
+    - `cd /var/www/keerat_backend`
+    - `./deploy.sh`
 
 ### How to setup https
 - ```
@@ -58,8 +54,8 @@
     sudo systemctl status certbot.timer
     sudo ufw delete allow 'Nginx HTTP'
     sudo ufw status
-```
+    ```
 
 
 ### Run Scripts in Background
-- ```crontab mycron.txt```
+    - `crontab mycron.txt`

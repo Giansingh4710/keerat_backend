@@ -6,8 +6,15 @@ set -e  # Exit on error
 IMAGE_NAME="keerat_backend"
 PORT=3002
 
-docker ps -a -q --filter "name=$IMAGE_NAME" | xargs docker stop
-docker ps -a -q --filter "name=$IMAGE_NAME" | xargs docker rm
+CONTAINER_IDS=$(docker ps -a -q --filter "name=$IMAGE_NAME")
+if [ -n "$CONTAINER_IDS" ]; then
+  echo "🛑 Stopping existing container(s)..."
+  docker stop $CONTAINER_IDS
+  echo "🗑️ Removing existing container(s)..."
+  docker rm $CONTAINER_IDS
+else
+  echo "✅ No existing containers to stop/remove."
+fi
 
 # Build image
 echo "🔨 Building Docker image for $MODE..."
