@@ -50,7 +50,7 @@
 - ```
     sudo ufw allow 'Nginx Full'
     sudo apt install certbot python3-certbot-nginx
-    sudo certbot --nginx -d getshabads.xyz -d www.getshabads.xyz
+    sudo certbot --nginx -d giansingh4710.xyz -d www.giansingh4710.xyz
     sudo systemctl status certbot.timer
     sudo ufw delete allow 'Nginx HTTP'
     sudo ufw status
