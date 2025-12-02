@@ -2,6 +2,7 @@
 
 set -e  # Exit on error
 
+./upload_data.sh
 # Set default mode to production
 IMAGE_NAME="keerat_backend"
 PORT=3002
